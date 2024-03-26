@@ -11,7 +11,10 @@ const customerSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 50
     },
-    isGold: Boolean,
+    isGold: {
+        type: Boolean,
+        default: false
+    },
     phone: {
         type: String,
         required: true,
@@ -25,7 +28,7 @@ const Customer = mongoose.model('Customer', customerSchema);
 function validateInput(object) {
     const schema = Joi.object({
         name: Joi.string().min(3).required(),
-        isGold: Joi.boolean().required(),
+        isGold: Joi.boolean(),
         phone: Joi.number().min(10).required()
     });
     return result = schema.validate(object);
@@ -35,7 +38,7 @@ function validateInput(object) {
 
 // READ
 router.get('/', async (req, res) => {
-    const customer = await Customer.find();
+    const customer = await Customer.find().sort('name');
     res.send(customer);
 });
 
