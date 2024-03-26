@@ -1,36 +1,13 @@
-const Joi = require('joi');
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
-
-
-
-// Schema
-const genreSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 100
-    }
-});
-
-//modelling
-const Genre = mongoose.model('Genre', genreSchema);
-
-function validateInput(object) {
-    const schema = Joi.object({
-        name: Joi.string().min(3).required()
-    });
-    return result = schema.validate(object);
-}
+const {Genre, validate} = require('../models/genres');
 
 // Building a simple CRUD API
 
 // CREATE
 router.post('/', async (req, res) => {
     // Input Validation
-    const { error } = validateInput(req.body);
+    const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message)
 
     const genre = new Genre({ name: req.body.name });
@@ -64,7 +41,7 @@ router.get('/:id', async (req, res) => {
 // UPDATE
 router.put('/:id', async (req, res) => {
     // Input Validation
-    const { error } = validateInput(req.body);
+    const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message)
 
     const genre = await Genre.findByIdAndUpdate(req.params.id, { name: req.body.name }, {
