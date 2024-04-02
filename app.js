@@ -2,6 +2,7 @@ const genres = require('./routes/genres');
 const customers = require('./routes/customers');
 const movies = require('./routes/movies');
 const rentals = require('./routes/rentals');
+const users = require('./routes/user');
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -19,6 +20,7 @@ app.use('/api/genres', genres);
 app.use('/api/courses', customers);
 app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
+app.use('/api/users', users);
 
 //PORT
 const port = process.env.PORT || 8080;
