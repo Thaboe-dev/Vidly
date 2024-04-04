@@ -1,6 +1,7 @@
 const { User, validate } = require('../models/user');
 const express = require('express');
 const router = express.Router();
+const _ = require('lodash');
 
 // API Endpoints
 
@@ -13,16 +14,17 @@ router.post('/', async (req, res) => {
     let user = await User.findOne({ email: req.body.email });
     if (user) return res.status(400).send('User already registered');
 
-    user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-    });
+    user = new User(_.pick(req.body, [
+        'name',
+        'email',
+        'password'
+    ]));
 
     // posting to the database
     try {
         await user.save();
-        res.send(user);
+        
+        res.send(_.pick(user, ['name', 'email']));
     }
     catch (ex) {
         res.send(ex.message);
