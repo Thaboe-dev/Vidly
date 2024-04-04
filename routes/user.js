@@ -2,6 +2,7 @@ const { User, validate } = require('../models/user');
 const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
+const bcrypt = require('bcrypt');
 
 // API Endpoints
 
@@ -19,6 +20,10 @@ router.post('/', async (req, res) => {
         'email',
         'password'
     ]));
+
+    //hashing the password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
 
     // posting to the database
     try {
