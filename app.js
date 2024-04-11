@@ -26,16 +26,14 @@ const logger = winston.createLogger({
   });
 
 //uncaught exceptions
-process.on('uncaughtException', (ex) => {
-    winston.error(ex.message);
-    process.exit(1);
-});
+winston.exceptions.handle(
+    new winston.transports.File({ filename: 'exceptions.log' })
+  );
 
 //unhandled promise rejections
-process.on('unhandledRejection', (ex) => {
-    winston.error(ex.message);
-    process.exit(1);
-});
+winston.rejections.handle(
+    new winston.transports.File({ filename: 'rejections.log' })
+  );
 
 if (!config.get('jwtPrivateKey')) {
     console.error('FATAL ERROR: jwtPrivateKey is not defined.');
