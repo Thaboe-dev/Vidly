@@ -1,6 +1,7 @@
 const express = require('express');
 const { Movie, validate } = require('../models/movies');
 const { Genre } = require('../models/genres');
+const auth = require('../middleware/auth');
 const router = express.Router();
 
 // API Endpoints
@@ -18,7 +19,7 @@ router.get('/:id', async (req,res) => {
 })
 
 // CREATE
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     // Input Validation
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -47,7 +48,7 @@ router.post('/', async (req, res) => {
 })
 
 // UPDATE
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     // Input Validation
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
