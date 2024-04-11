@@ -1,3 +1,4 @@
+require('express-async-errors');
 const config = require('config');
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
@@ -9,6 +10,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const error = require('./middleware/error');
 Joi.objectId = require('joi-objectid')(Joi);
 
 if (!config.get('jwtPrivateKey')) {
@@ -30,6 +32,9 @@ app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+
+//express error middleware
+app.use(error);
 
 //PORT
 const port = process.env.PORT || 8080;
