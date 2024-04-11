@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {Genre, validate} = require('../models/genres');
 const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 // Building a simple CRUD API
 
@@ -56,7 +57,7 @@ router.put('/:id', auth, async (req, res) => {
 });
 
 // DELETE
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
     const genre = await Genre.findByIdAndDelete(req.params.id);
 
     // if invalid ID
