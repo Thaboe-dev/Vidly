@@ -1,4 +1,5 @@
 require('express-async-errors');
+require('winston-mongodb');
 const winston = require('winston');
 const config = require('config');
 const genres = require('./routes/genres');
@@ -19,7 +20,8 @@ const logger = winston.createLogger({
     format: winston.format.json(),
     defaultMeta: { service: 'user-service' },
     transports: [
-        winston.add(new winston.transports.File({ filename: 'logs.log' }))
+        winston.add(new winston.transports.File({ filename: 'logs.log' })),
+        winston.add(new winston.transports.MongoDB({ db: 'mongodb://localhost:27017/vidly' }))
     ],
   });
 
