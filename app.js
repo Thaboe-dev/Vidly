@@ -27,10 +27,15 @@ const logger = winston.createLogger({
 
 //uncaught exceptions
 process.on('uncaughtException', (ex) => {
-    console.log('UNCAUGHT EXCEPTION');
     winston.error(ex.message);
+    process.exit(1);
 });
 
+//unhandled promise rejections
+process.on('unhandledRejection', (ex) => {
+    winston.error(ex.message);
+    process.exit(1);
+});
 
 if (!config.get('jwtPrivateKey')) {
     console.error('FATAL ERROR: jwtPrivateKey is not defined.');
