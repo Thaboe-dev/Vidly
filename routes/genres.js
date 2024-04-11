@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const {Genre, validate} = require('../models/genres');
+const auth = require('../middleware/auth');
 
 // Building a simple CRUD API
 
 // CREATE
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     // Input Validation
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message)
