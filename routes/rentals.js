@@ -4,6 +4,7 @@ const { Customer } = require('../models/customer');
 const { Movie } = require('../models/movies');
 const auth = require('../middleware/auth');
 const mongoose = require('mongoose');
+const admin = require('../middleware/admin');
 const router = express.Router();
 
 
@@ -87,7 +88,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Update
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', [auth, admin], async (req, res) => {
     // Input Validation
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -121,7 +122,7 @@ router.put('/:id', auth, async (req, res) => {
 });
 
 // Delete
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
     const rental = Rental.findByIdAndDelete(req.params.id);
     if (!rental) return res.status(404).send("Rental not found");
 

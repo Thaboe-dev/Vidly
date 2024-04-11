@@ -1,6 +1,7 @@
 const {Customer, validate} = require('../models/customer');
 const auth = require('../middleware/auth');
 const express = require('express');
+const admin = require('../middleware/admin');
 const router = express.Router();
 
 // API Endpoints
@@ -40,7 +41,7 @@ router.post('/', auth, async (req, res) => {
 })
 
 // UPDATE
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', [auth, admin], async (req, res) => {
     // Input Validation
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -57,7 +58,7 @@ router.put('/:id', auth, async (req, res) => {
 })
 
 // DELETE
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
     const customer = await Customer.findByIdAndDelete(req.params.id);
     // if invalid ID
     if (!customer) return res.status(404).send("Customer not found");
