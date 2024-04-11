@@ -51,12 +51,12 @@ router.get('/me', auth, async (req, res) => {
 });
 
 // Update
-router.put('/:id', async (req, res) => {
+router.put('/me', async (req, res) => {
     // Input Validation
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const user = await User.findByIdAndUpdate(req.params.id, {
+    const user = await User.findByIdAndUpdate(req.user._id, {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password
