@@ -25,6 +25,13 @@ const logger = winston.createLogger({
     ],
   });
 
+//uncaught exceptions
+process.on('uncaughtException', (ex) => {
+    console.log('UNCAUGHT EXCEPTION');
+    winston.error(ex.message);
+});
+
+
 if (!config.get('jwtPrivateKey')) {
     console.error('FATAL ERROR: jwtPrivateKey is not defined.');
     console.log(process.env);
