@@ -4,6 +4,7 @@ const {Genre, validate} = require('../models/genres');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const { default: mongoose } = require('mongoose');
+const validateObjectId = require('../middleware/validateObjectId');
 
 // Building a simple CRUD API
 
@@ -31,9 +32,7 @@ router.get('/', async (req, res) => {
     res.send(genres);
 });
 
-router.get('/:id', async (req, res) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id))
-        return res.status(404).send('Invalid ID.');
+router.get('/:id', validateObjectId, async (req, res) => {
 
     const genre = await Genre.findById(req.params.id);
 
