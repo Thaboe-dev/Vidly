@@ -49,6 +49,10 @@ describe('/api/genres', () => {
             expect(res.body).toHaveProperty('name', genre.name);
         });
 
-        
+        it('should return status 404 if given genre ID is not valid', async () => {
+       
+            const res = await request(server).get('/api/genres/12334');
+            expect(res.status).toBe(404);
+        });
     });
 });
