@@ -1,6 +1,7 @@
 const request = require('supertest');
 const { Genre } = require('../../models/genres');
 const { User } = require('../../models/user');
+const { default: mongoose } = require('mongoose');
 let server;
 
 jest.mock('config', () => {
@@ -53,6 +54,12 @@ describe('/api/genres', () => {
         it('should return status 404 if given genre ID is not valid', async () => {
        
             const res = await request(server).get('/api/genres/12334');
+            expect(res.status).toBe(404);
+        });
+
+        it('should return status 404 if no genre with given ID exists', async () => {
+            const id = new mongoose.Types.ObjectId();
+            const res = await request(server).get('/api/genres/' + id);
             expect(res.status).toBe(404);
         });
     });
