@@ -19,9 +19,9 @@ jest.mock('config', () => {
 describe('/api/genres', () => {
     beforeEach(() => {  server = require('../../app'); });
     afterEach(async () => { 
-        server.close();
         await Genre.deleteMany({ name: 'genre1' });
-        await Genre.deleteMany({ name: 'genre2' });    
+        await Genre.deleteMany({ name: 'genre2' }); 
+        server.close();   
     });
 
     describe('GET /', () => {
