@@ -18,15 +18,17 @@ jest.mock('config', () => {
   
 
 describe('auth middleware', () => {
+    let token;
 
-    beforeEach(() => {  server = require('../../app'); });
+    beforeEach(() => {  
+        server = require('../../app'); 
+        token = new User().generateAuthToken();
+    });
     afterEach(async () => { 
         await Genre.deleteMany({ name: 'genre1' });
         server.close();
            
     });
-
-    let token;
 
     const exec = () => {
         return request(server)
@@ -34,10 +36,6 @@ describe('auth middleware', () => {
         .set('x-auth-token', token)
         .send({ name: 'genre1' });
     }
-
-    beforeEach(() => {
-        token = new User().generateAuthToken();
-    })
 
     it('should return 401 if no token is provided', async () => {
         token = '';
