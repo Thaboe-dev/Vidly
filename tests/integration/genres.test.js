@@ -23,7 +23,7 @@ describe('/api/genres', () => {
         await Genre.deleteMany({ name: 'genre1' });
         await Genre.deleteMany({ name: 'genre2' }); 
         await Genre.deleteMany({ name: 'updatedName' });
-        server.close();   
+        await server.close();   
     });
 
     describe('GET /', () => {
