@@ -1,5 +1,6 @@
 const {Genre, validate} = require('../models/genres');
 
+// CREATE
 exports.createGenre = async (req, res) => {
     // Input Validation
     const { error } = validate(req.body);
@@ -17,10 +18,12 @@ exports.createGenre = async (req, res) => {
 
 }
 
+// READ
 exports.getAllGenres = async (req, res) => {
     const genres = await Genre.find().sort('name');
     res.send(genres);
 }
+
 
 exports.getGenre = async (req, res) => {
 
@@ -33,6 +36,7 @@ exports.getGenre = async (req, res) => {
     res.send(genre);
 }
 
+// UPDATE
 exports.updateGenre = async (req, res) => {
     // Input Validation
     const { error } = validate(req.body);
@@ -48,6 +52,7 @@ exports.updateGenre = async (req, res) => {
     res.send(genre);
 }
 
+// DELETE
 exports.deleteGenre = async (req, res) => {
     const genre = await Genre.findByIdAndDelete(req.params.id);
 
