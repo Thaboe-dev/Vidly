@@ -22,9 +22,17 @@ describe('/api/returns', () => {
     let customerId;
     let movieId;
 
+    const exec = () => {
+        return request(server)
+            .post('/api/returns')
+            .set('x-auth-token', token)
+            .send({ customerId, movieId });
+    }
+
     beforeEach( async () => {
         server = require('../../app');
 
+        token = new User().generateAuthToken();
         customerId = new mongoose.Types.ObjectId();
         movieId = new mongoose.Types.ObjectId();
         rental = new Rental({
@@ -44,38 +52,38 @@ describe('/api/returns', () => {
     })
 
     afterEach(async () => {
-        await Rental.deleteMany({ customer: { name: 'thaboe' } });
+        await Rental.deleteMany({
+            customer: { name: 'thaboe' },
+            movie: { title: 'deadpool' }
+        });
         await server.close();
     })
 
     it('should return 401 if client is not logged in', async () => {
-        const res = await request(server)
-            .post('/api/returns')
-            .send({ customerId, movieId });
+        token = '';
+        const res = await exec();
 
         expect(res.status).toBe(401);
 
     });
 
     it('should return 400 if customerId is not provided', async () => {
-        token = new User().generateAuthToken();
-
-        const res = await request(server)
-                .post('/api/returns')
-                .set('x-auth-token', token)
-                .send({ movieId });
-
+        customerId = '';
+        const res  =await exec();
         expect(res.status).toBe(400);
     });
 
     it('should return 400 if movieId is not provided', async () => {
-        token = new User().generateAuthToken();
-
-        const res = await request(server)
-                .post('/api/returns')
-                .set('x-auth-token', token)
-                .send({ customerId });
+        movieId = '';
+        const res  =await exec();
 
         expect(res.status).toBe(400);
     });
+
+    `it('should return 404 if no rental is found', async () => {
+        await Rental.deleteMany({ customer: { name: 'thaboe' } });
+        const res = await exec();
+
+        expect(res.status).toBe(404);
+    });`
 });
