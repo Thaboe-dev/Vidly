@@ -2,13 +2,11 @@
 
 # Vidly Express Server
 
-A practical node-express project in order to increase my backend implement skills using javaScript .
+A practical node-express project in order to increase my backend skills using javaScript .
 
 # Getting Started
 
 ### These instructions will get you a copy of the project up and running on your local machine for development and testing purposes:
-
-## Primary exception of sharing this is repository is your attention on notes I'm attached on the following of this passage:
 
 ## Prerequisites
 
